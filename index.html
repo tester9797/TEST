@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Lumière — Café Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --parchment: #ede5d0;
+    --warm-brown: #3b2a1a;
+    --espresso: #1a0f06;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --terracotta: #b5623b;
+    --sage: #7a8c6e;
+    --ink: #2a1f14;
+    --divider: #c9a84c44;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    text-align: center;
+    padding: 70px 40px 50px;
+    position: relative;
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--cream) 100%);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .header-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .ornament-line {
+    flex: 1;
+    max-width: 140px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .ornament-line.right {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .ornament-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .cafe-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--espresso);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .cafe-name span {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .cafe-tagline {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 200;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    opacity: 0.7;
+    margin-bottom: 24px;
+  }
+
+  .cafe-address {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 100;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    opacity: 0.5;
+  }
+
+  /* ---- NAV TABS ---- */
+  .nav-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--espresso);
+    border-bottom: 2px solid var(--gold);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-wrapper::-webkit-scrollbar { display: none; }
+
+  .nav {
+    display: flex;
+    white-space: nowrap;
+    padding: 0 20px;
+  }
+
+  .nav-item {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    padding: 16px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .menu-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 30px 80px;
+  }
+
+  /* ---- CATEGORY SECTION ---- */
+  .category {
+    padding: 70px 0 40px;
+    border-bottom: 1px solid var(--divider);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .category-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .category-number {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 200;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    padding-bottom: 6px;
+  }
+
+  .category-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--espresso);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .category-title em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .category-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--warm-brown);
+    opacity: 0.6;
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .category-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+    margin-bottom: 8px;
+  }
+
+  /* ---- ITEMS GRID ---- */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+  }
+
+  .menu-item {
+    padding: 20px 24px 20px 0;
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    transition: background 0.2s ease;
+    cursor: default;
+  }
+
+  .menu-item:hover {
+    background: rgba(201, 168, 76, 0.04);
+  }
+
+  .item-info { flex: 1; }
+
+  .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--espresso);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .item-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--warm-brown);
+    opacity: 0.6;
+    line-height: 1.4;
+  }
+
+  .item-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+
+  .tag-veg { background: rgba(122,140,110,0.15); color: var(--sage); border: 1px solid rgba(122,140,110,0.3); }
+  .tag-hot { background: rgba(181,98,59,0.1); color: var(--terracotta); border: 1px solid rgba(181,98,59,0.2); }
+  .tag-new { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .tag-cold { background: rgba(100,140,180,0.1); color: #6490b0; border: 1px solid rgba(100,140,180,0.2); }
+  .tag-gf { background: rgba(150,120,80,0.1); color: #967850; border: 1px solid rgba(150,120,80,0.25); }
+
+  .item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    background: var(--espresso);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 48px 24px;
+  }
+
+  .footer-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .footer-line {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .footer-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    opacity: 0.5;
+    transform: rotate(45deg);
+  }
+
+  .footer p {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .footer .footer-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    opacity: 0.5;
+  }
+
+  /* ---- ALLERGEN NOTICE ---- */
+  .allergen-notice {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid var(--divider);
+    border-radius: 3px;
+    margin: 48px 0 0;
+    padding: 24px 32px;
+    text-align: center;
+  }
+
+  .allergen-notice p {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 200;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    opacity: 0.6;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 600px) {
+    .items-grid { grid-template-columns: 1fr; }
+    .menu-item { padding-right: 0; }
+    .category-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .category-rule { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line right"></div>
+  </div>
+  <h1 class="cafe-name">Maison <span>Lumière</span></h1>
+  <p class="cafe-tagline">Café & Brasserie — Est. 2009</p>
+  <p class="cafe-address">12 Rue des Artisans, Paris · Open Daily 7h — 23h</p>
+</header>
+
+<!-- NAVIGATION -->
+<nav class="nav-wrapper">
+  <div class="nav">
+    <a href="#espresso" class="nav-item active">Espresso</a>
+    <a href="#filter" class="nav-item">Filter Coffee</a>
+    <a href="#tea" class="nav-item">Tea & Infusions</a>
+    <a href="#cold" class="nav-item">Cold Drinks</a>
+    <a href="#breakfast" class="nav-item">Breakfast</a>
+    <a href="#pastries" class="nav-item">Pastries</a>
+    <a href="#lunch" class="nav-item">Lunch</a>
+    <a href="#salads" class="nav-item">Salads</a>
+    <a href="#wine" class="nav-item">Wine & Beer</a>
+    <a href="#desserts" class="nav-item">Desserts</a>
+  </div>
+</nav>
+
+<!-- MENU CONTENT -->
+<main class="menu-container">
+
+  <!-- 1. ESPRESSO -->
+  <section class="category" id="espresso">
+    <div class="category-header">
+      <span class="category-number">01</span>
+      <div>
+        <h2 class="category-title"><em>Espresso</em> & Coffee</h2>
+        <p class="category-desc">Single-origin beans, roasted locally each week</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Ristretto</div><div class="item-desc">Concentrated shot, intense and syrupy</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">2.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Espresso Solo</div><div class="item-desc">Classic single shot, balanced and aromatic</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">2.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Espresso Doppio</div><div class="item-desc">Double shot for those who need it</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">3.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Macchiato</div><div class="item-desc">Espresso with a touch of foamed milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">3.20€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Cortado</div><div class="item-desc">Equal parts espresso and warm steamed milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">3.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Flat White</div><div class="item-desc">Velvety microfoam over a double ristretto</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-new">New</span></div></div><div class="item-price">4.20€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Cappuccino</div><div class="item-desc">Classic thirds of espresso, milk and foam</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">4.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Café au Lait</div><div class="item-desc">Strong brewed coffee with warm steamed milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">3.90€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Café Latte</div><div class="item-desc">Espresso with generous steamed milk, light foam</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Mocha</div><div class="item-desc">Espresso, dark cocoa and steamed milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">4.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Espresso Tonic</div><div class="item-desc">Cold shot over premium tonic water, citrus notes</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-new">New</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Affogato</div><div class="item-desc">Double espresso poured over vanilla bean gelato</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">5.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 2. FILTER COFFEE -->
+  <section class="category" id="filter">
+    <div class="category-header">
+      <span class="category-number">02</span>
+      <div>
+        <h2 class="category-title">Filter <em>Coffee</em></h2>
+        <p class="category-desc">Slow-brewed with single-origin specialty beans</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">V60 Pour Over</div><div class="item-desc">Ethiopian Yirgacheffe, floral and bright</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chemex</div><div class="item-desc">Colombian Huila, caramel and red fruit notes</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">6.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Aeropress</div><div class="item-desc">Smooth, low-acid, full-bodied cup</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">French Press</div><div class="item-desc">Bold Sumatran blend, rich and earthy</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Cold Brew</div><div class="item-desc">18-hour steep, silky smooth and naturally sweet</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Cold Brew Tonic</div><div class="item-desc">Cold brew over fever-tree tonic and orange peel</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-new">New</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">6.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Nitro Cold Brew</div><div class="item-desc">Nitrogen-infused cold brew, creamy cascade</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">6.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Decaf Filter</div><div class="item-desc">Swiss water decaf, Brazilian Santos base</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Seasonal Single Origin</div><div class="item-desc">Ask our barista — rotating monthly selection</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-new">New</span></div></div><div class="item-price">7.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Coffee Flight</div><div class="item-desc">Three 80ml tastings of today's filter selection</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">9.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Batch Brew</div><div class="item-desc">House blend, fresh every 30 minutes</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">3.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 3. TEA & INFUSIONS -->
+  <section class="category" id="tea">
+    <div class="category-header">
+      <span class="category-number">03</span>
+      <div>
+        <h2 class="category-title">Tea & <em>Infusions</em></h2>
+        <p class="category-desc">Loose-leaf selection from acclaimed estates</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Darjeeling First Flush</div><div class="item-desc">Muscatel notes, light golden cup, Himalayan estate</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Earl Grey Supérieur</div><div class="item-desc">Ceylon base with bergamot, lavender and cornflower</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Gyokuro</div><div class="item-desc">Shade-grown Japanese green, umami and vegetal</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">6.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Matcha Ceremonial</div><div class="item-desc">Uji matcha whisked with spring water</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Matcha Latte</div><div class="item-desc">Ceremonial matcha with steamed oat milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">5.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rooibos Vanilla</div><div class="item-desc">Caffeine-free South African red bush, sweet and warm</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chamomile & Honey</div><div class="item-desc">Dried chamomile blossoms with wildflower honey</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fresh Mint Infusion</div><div class="item-desc">Garden mint leaves steeped to order</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">3.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Lapsang Souchong</div><div class="item-desc">Pine-smoked Chinese black tea, bold and singular</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Golden Turmeric Latte</div><div class="item-desc">Turmeric, ginger, cinnamon with steamed milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.20€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Hibiscus Iced Tea</div><div class="item-desc">Chilled hibiscus, rose hip and elderflower</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chai Masala</div><div class="item-desc">House-spiced black tea simmered with whole milk</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">5.00€</div></div>
+    </div>
+  </section>
+
+  <!-- 4. COLD DRINKS -->
+  <section class="category" id="cold">
+    <div class="category-header">
+      <span class="category-number">04</span>
+      <div>
+        <h2 class="category-title">Cold <em>Drinks</em></h2>
+        <p class="category-desc">Freshly pressed, house-made and seasonal</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fresh Orange Juice</div><div class="item-desc">Pressed to order, Valencia oranges</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Green Detox</div><div class="item-desc">Apple, cucumber, spinach, lemon and ginger</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">6.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Carrot Ginger</div><div class="item-desc">Fresh carrot, ginger, turmeric and orange</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Watermelon Mint Cooler</div><div class="item-desc">Blended watermelon, mint and lime juice</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-new">New</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Iced Lemon Verbena</div><div class="item-desc">House-brewed verbena over crushed ice</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sparkling Lemonade</div><div class="item-desc">Hand-squeezed with rosemary syrup and bubbles</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Elderflower Spritz</div><div class="item-desc">House elderflower cordial, soda and cucumber</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Mango Lassi</div><div class="item-desc">Alphonso mango, whole-milk yogurt, cardamom</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">5.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Strawberry Basil Lemonade</div><div class="item-desc">Seasonal strawberries muddled with fresh basil</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-new">New</span></div></div><div class="item-price">5.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Still or Sparkling Water</div><div class="item-desc">Evian still / Badoit sparkling — 50cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">3.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kombucha du Jour</div><div class="item-desc">House-fermented, ask your server for today's flavor</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 5. BREAKFAST -->
+  <section class="category" id="breakfast">
+    <div class="category-header">
+      <span class="category-number">05</span>
+      <div>
+        <h2 class="category-title"><em>Breakfast</em> & Brunch</h2>
+        <p class="category-desc">Served until 12h30 · Ingredients sourced daily from local farms</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Le Petit Déjeuner Maison</div><div class="item-desc">Croissant, tartine, seasonal jam, OJ, coffee</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Avocado Toast</div><div class="item-desc">Sourdough, smashed avocado, chili flakes, lemon</div><div class="item-tags"><span class="tag tag-veg">Vegan</span><span class="tag tag-hot">Hot</span></div></div><div class="item-price">11.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Avocado Toast + Egg</div><div class="item-desc">With poached or soft-boiled egg and za'atar</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Œufs Brouillés</div><div class="item-desc">Soft scrambled eggs, crème fraîche, chives, brioche</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">12.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Granola Bowl</div><div class="item-desc">House granola, Greek yogurt, seasonal fruit, honey</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">10.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Pancakes Américains</div><div class="item-desc">Buttermilk stack, maple syrup, whipped butter</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">11.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Shakshuka</div><div class="item-desc">Spiced tomato sauce, poached eggs, feta, sourdough</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">13.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Croque Madame</div><div class="item-desc">Ham, Gruyère béchamel, fried egg, sourdough</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tartine Beurre & Confiture</div><div class="item-desc">Country bread, cultured butter, house strawberry jam</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Açaí Bowl</div><div class="item-desc">Blended açaí, banana, topped with granola and mango</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">12.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Smoked Salmon Bagel</div><div class="item-desc">Cream cheese, capers, red onion, dill, everything bagel</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">14.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Overnight Oats</div><div class="item-desc">Oat milk, chia, blueberry compote, almond butter</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">9.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 6. PASTRIES -->
+  <section class="category" id="pastries">
+    <div class="category-header">
+      <span class="category-number">06</span>
+      <div>
+        <h2 class="category-title">Boulangerie & <em>Pâtisseries</em></h2>
+        <p class="category-desc">Baked fresh on-site each morning before 7h</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Croissant Pur Beurre</div><div class="item-desc">72-hour laminated dough, AOP Charentes butter</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">3.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Pain au Chocolat</div><div class="item-desc">Double dark Valrhona chocolate batons</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">3.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kouign-Amann</div><div class="item-desc">Caramelised Breton butter cake, crisp edges</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tarte Citron</div><div class="item-desc">Silky lemon curd in a sablé shell, Swiss meringue</div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Financier aux Amandes</div><div class="item-desc">Brown butter almond cake, golden crust</div></div><div class="item-price">3.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Madeleine Maison</div><div class="item-desc">Classic shell cake with lemon zest and honey</div></div><div class="item-price">2.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Seasonal Fruit Tart</div><div class="item-desc">Crème pâtissière, fresh market fruit, glaze</div></div><div class="item-price">6.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Banana Walnut Loaf</div><div class="item-desc">Ripe banana, toasted walnuts, dark muscovado</div><div class="item-tags"><span class="tag tag-veg">Veg</span></div></div><div class="item-price">4.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Cinnamon Roll</div><div class="item-desc">Brioche dough, cinnamon sugar, cream cheese glaze</div></div><div class="item-price">4.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Palmier Caramélisé</div><div class="item-desc">Puff pastry heart with caramelised sugar crust</div></div><div class="item-price">2.80€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Canelé Bordelais</div><div class="item-desc">Dark rum and vanilla custard in crisp beeswax shell</div></div><div class="item-price">3.20€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Gluten-Free Almond Cake</div><div class="item-desc">Moist almond flour cake, citrus syrup</div><div class="item-tags"><span class="tag tag-gf">GF</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">4.80€</div></div>
+    </div>
+  </section>
+
+  <!-- 7. LUNCH -->
+  <section class="category" id="lunch">
+    <div class="category-header">
+      <span class="category-number">07</span>
+      <div>
+        <h2 class="category-title">Plats du <em>Déjeuner</em></h2>
+        <p class="category-desc">Served 12h – 15h · Menu changes with the season</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Croque Monsieur Truffé</div><div class="item-desc">Black truffle béchamel, jambon de Paris, Comté</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">15.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tartine du Marché</div><div class="item-desc">Open-face sourdough with seasonal roasted vegetables</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Quiche Lorraine</div><div class="item-desc">Lardons, Gruyère and cream in a buttery short crust</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">12.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Club Sandwich Maison</div><div class="item-desc">Roast chicken, bacon, egg, tomato, herb mayo</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">16.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Pita Falafel</div><div class="item-desc">House-fried falafel, tahini, pickled cabbage, harissa</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">13.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Planche Charcuterie</div><div class="item-desc">Cured meats, cornichons, grainy mustard, sourdough</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">18.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Burrata & Tomates</div><div class="item-desc">Stracciatella, heirloom tomatoes, basil oil, fleur de sel</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">14.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Pasta du Jour</div><div class="item-desc">Fresh pasta, sauce changes daily — ask your server</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">14.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Bowl Végétarien</div><div class="item-desc">Quinoa, roasted chickpeas, avocado, tahini dressing</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">14.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Saumon Gravlax</div><div class="item-desc">Dill-cured salmon, blinis, crème fraîche, capers</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">17.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Soupe du Jour</div><div class="item-desc">Ask your server, served with country bread and butter</div><div class="item-tags"><span class="tag tag-hot">Hot</span></div></div><div class="item-price">8.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Formule Déjeuner</div><div class="item-desc">Plat + dessert or starter + plat, coffee included</div><div class="item-tags"><span class="tag tag-new">New</span></div></div><div class="item-price">22.00€</div></div>
+    </div>
+  </section>
+
+  <!-- 8. SALADS -->
+  <section class="category" id="salads">
+    <div class="category-header">
+      <span class="category-number">08</span>
+      <div>
+        <h2 class="category-title">Salades & <em>Verdures</em></h2>
+        <p class="category-desc">Organic leaves from Île-de-France farms</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salade Niçoise</div><div class="item-desc">Tuna, green beans, egg, olive, anchovy, vinaigrette</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">15.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">César Classique</div><div class="item-desc">Romaine, house Caesar, parmesan, anchovy, croutons</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">César Poulet</div><div class="item-desc">With grilled free-range chicken breast</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">16.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Chèvre Chaud & Figues</div><div class="item-desc">Warm goat cheese, honey, walnut, rocket, fig</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">14.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salade Marocaine</div><div class="item-desc">Chickpea, roasted carrot, harissa yogurt, herbs</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">13.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Thai Glass Noodle</div><div class="item-desc">Rice noodles, mango, peanut, mint, nam jim dressing</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">13.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Betterave & Burrata</div><div class="item-desc">Roasted beets, burrata, pistachio, basil, aged balsamic</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">14.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fattoush Libanais</div><div class="item-desc">Toasted pita, radish, sumac, pomegranate molasses</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">12.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Kale & Quinoa</div><div class="item-desc">Massaged kale, roasted pumpkin seeds, lemon tahini</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">13.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Salade du Chef</div><div class="item-desc">Daily creation — ask your server for today's creation</div><div class="item-tags"><span class="tag tag-new">Seasonal</span></div></div><div class="item-price">15.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Supplément Protéine</div><div class="item-desc">Add grilled chicken / smoked salmon / halloumi</div><div class="item-tags"><span class="tag tag-gf">GF</span></div></div><div class="item-price">+4.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 9. WINE & BEER -->
+  <section class="category" id="wine">
+    <div class="category-header">
+      <span class="category-number">09</span>
+      <div>
+        <h2 class="category-title">Vins & <em>Bières</em></h2>
+        <p class="category-desc">Natural wines and artisan craft beers</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Blanc — Chablis 1er Cru</div><div class="item-desc">Crisp and mineral, notes of green apple and flint · 75cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">42.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Blanc — Verre du Jour</div><div class="item-desc">Rotating selection, ask your server — glass 15cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">7.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rosé — Provence AOP</div><div class="item-desc">Pale coral, redcurrant and peach, Côtes de Provence</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">38.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rouge — Bordeaux Supérieur</div><div class="item-desc">Merlot-Cab blend, cedar, dark plum, smooth tannins</div><div class="item-tags"><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">40.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Rouge — Beaujolais Nouveau</div><div class="item-desc">Light, fruity, slightly chilled — seasonal</div><div class="item-tags"><span class="tag tag-veg">Vegan</span><span class="tag tag-new">Seasonal</span></div></div><div class="item-price">32.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Pétillant Naturel</div><div class="item-desc">Méthode ancestrale, low-intervention, lightly fizzy</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">36.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Champagne Brut — Coupe</div><div class="item-desc">House champagne, toasty brioche and citrus, 12cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">14.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">IPA Artisanale</div><div class="item-desc">Local microbrewery, tropical hops, 33cl bottle</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">7.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Bière Blonde Pression</div><div class="item-desc">Craft lager on tap, refreshing, 25cl / 50cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.00 / 8.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Bière Sans Alcool</div><div class="item-desc">Pale ale, non-alcoholic, complex and malty, 33cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">5.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Spritz Aperol Maison</div><div class="item-desc">Aperol, Prosecco, soda, orange — 20cl</div><div class="item-tags"><span class="tag tag-cold">Cold</span></div></div><div class="item-price">9.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Stout Noire</div><div class="item-desc">Craft Irish-style stout, chocolate and coffee notes</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span></div></div><div class="item-price">7.50€</div></div>
+    </div>
+  </section>
+
+  <!-- 10. DESSERTS -->
+  <section class="category" id="desserts">
+    <div class="category-header">
+      <span class="category-number">10</span>
+      <div>
+        <h2 class="category-title"><em>Desserts</em> & Douceurs</h2>
+        <p class="category-desc">Made entirely in-house, every day</p>
+      </div>
+      <div class="category-rule"></div>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">Crème Brûlée Vanille</div><div class="item-desc">Madagascar vanilla, crisp caramel crust, tableside flame</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">7.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Mousse au Chocolat</div><div class="item-desc">70% Valrhona Guanaja, sea salt, candied cocoa nibs</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">7.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Île Flottante</div><div class="item-desc">Poached meringue, crème anglaise, praline, caramel</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">7.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tarte Tatin</div><div class="item-desc">Upside-down caramelised apple, served warm with cream</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">8.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Panna Cotta Tonka</div><div class="item-desc">Tonka bean cream, blackcurrant coulis, almond tuile</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">7.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Tiramisu Maison</div><div class="item-desc">Savoiardi, espresso, Marsala, mascarpone</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">8.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fondant au Chocolat</div><div class="item-desc">Warm molten centre, vanilla bean ice cream</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">9.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Clafoutis aux Cerises</div><div class="item-desc">Baked custard with whole cherries, seasonal</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span><span class="tag tag-new">Seasonal</span></div></div><div class="item-price">7.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Sorbet Maison — 3 Boules</div><div class="item-desc">Ask your server for today's flavors, fruit sorbets</div><div class="item-tags"><span class="tag tag-cold">Cold</span><span class="tag tag-veg">Vegan</span><span class="tag tag-gf">GF</span></div></div><div class="item-price">6.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Fromage Affiné</div><div class="item-desc">Selection of 3 aged cheeses, quince paste, crackers</div><div class="item-tags"><span class="tag tag-veg">Veg</span><span class="tag tag-gf">GF available</span></div></div><div class="item-price">13.00€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Profiteroles</div><div class="item-desc">Choux puffs, vanilla ice cream, warm chocolate sauce</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">8.50€</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">Paris-Brest</div><div class="item-desc">Choux ring, praline mousseline, caramelised hazelnuts</div><div class="item-tags"><span class="tag tag-hot">Hot</span><span class="tag tag-veg">Veg</span></div></div><div class="item-price">9.50€</div></div>
+    </div>
+  </section>
+
+  <!-- ALLERGEN NOTICE -->
+  <div class="allergen-notice">
+    <p>All prices include VAT · Allergen information available on request · Please inform us of any dietary requirements<br>
+    Veg = Vegetarian · Vegan = Plant-Based · GF = Gluten-Free option available · Service is not included</p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-ornament">
+    <div class="footer-line"></div>
+    <div class="footer-diamond"></div>
+    <div class="footer-line"></div>
+  </div>
+  <p>Maison Lumière — Café & Brasserie</p>
+  <p>12 Rue des Artisans · 75004 Paris · +33 1 42 78 90 12</p>
+  <p style="margin-top:16px;" class="footer-note">« Le café est une magie noire qui transforme les rêves en projets. »</p>
+</footer>
+
+<script>
+  // Smooth active state on nav
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.category');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const id = entry.target.id;
+        const match = document.querySelector(`.nav-item[href="#${id}"]`);
+        if (match) {
+          match.classList.add('active');
+          match.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Smooth scroll on nav click
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(item.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
